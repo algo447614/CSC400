@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Bag<T> {
     private Map<T, Integer> items;
@@ -38,47 +39,67 @@ public class Bag<T> {
 
     // Method to print the contents of the Bag
     public void printBagContents() {
-        for (Map.Entry<T, Integer> entry : items.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        if (items.isEmpty()) {
+            System.out.println("The bag is empty.");
+        } else {
+            for (Map.Entry<T, Integer> entry : items.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
         }
     }
 
-    // Main method to demonstrate the Bag class
+    // Main method to demonstrate the Bag class with user interaction
     public static void main(String[] args) {
-        // Create an instance of the Bag class
         Bag<String> bag = new Bag<>();
+        Scanner scanner = new Scanner(System.in);
+        String command;
 
-        // Add several elements to the bag, including duplicates
-        bag.add("apple");
-        bag.add("banana");
-        bag.add("apple");
-        bag.add("orange");
-        bag.add("banana");
+        while (true) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Add an item");
+            System.out.println("2. Remove an item");
+            System.out.println("3. Check if item exists");
+            System.out.println("4. Count occurrences of an item");
+            System.out.println("5. Print bag contents");
+            System.out.println("6. Exit");
 
-        // Print the bag contents
-        System.out.println("Bag contents:");
-        bag.printBagContents();
+            command = scanner.nextLine();
 
-        // Test the contains method for a few elements
-        System.out.println("\nContains 'apple': " + bag.contains("apple"));
-        System.out.println("Contains 'grape': " + bag.contains("grape"));
-
-        // Test the count method for a few elements
-        System.out.println("\nCount of 'apple': " + bag.count("apple"));
-        System.out.println("Count of 'banana': " + bag.count("banana"));
-        System.out.println("Count of 'grape': " + bag.count("grape"));
-
-        // Remove an element from the bag
-        bag.remove("apple");
-
-        // Print the bag contents again
-        System.out.println("\nBag contents after removing 'apple':");
-        bag.printBagContents();
-
-        // Test the contains method for the removed element
-        System.out.println("\nContains 'apple' after removal: " + bag.contains("apple"));
-
-        // Test the count method for the removed element
-        System.out.println("Count of 'apple' after removal: " + bag.count("apple"));
+            switch (command) {
+                case "1":
+                    System.out.println("Enter item to add:");
+                    String itemToAdd = scanner.nextLine();
+                    bag.add(itemToAdd);
+                    System.out.println(itemToAdd + " added to the bag.");
+                    break;
+                case "2":
+                    System.out.println("Enter item to remove:");
+                    String itemToRemove = scanner.nextLine();
+                    bag.remove(itemToRemove);
+                    System.out.println(itemToRemove + " removed from the bag.");
+                    break;
+                case "3":
+                    System.out.println("Enter item to check:");
+                    String itemToCheck = scanner.nextLine();
+                    System.out.println("Bag contains " + itemToCheck + ": " + bag.contains(itemToCheck));
+                    break;
+                case "4":
+                    System.out.println("Enter item to count:");
+                    String itemToCount = scanner.nextLine();
+                    System.out.println("Count of " + itemToCount + ": " + bag.count(itemToCount));
+                    break;
+                case "5":
+                    System.out.println("Bag contents:");
+                    bag.printBagContents();
+                    break;
+                case "6":
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid command. Please try again.");
+                    break;
+            }
+        }
     }
 }

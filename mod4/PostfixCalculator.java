@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
+import java.util.Scanner;
 
 public class PostfixCalculator {
     public int evaluatePostfix(String postfixExpression) {
@@ -80,14 +81,15 @@ public class PostfixCalculator {
         }
     }
 
+    public static String getFilePathFromUser() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter the full path to your expressions.txt file:");
+        String filePath = scanner.nextLine();
+        return filePath;
+    }
+
     public static void main(String[] args) {
         PostfixCalculator calculator = new PostfixCalculator();
-
-        // Debug information
-        System.out.println("Current working directory: " + System.getProperty("user.dir"));
-        File file = new File("expressions.txt");
-        System.out.println("File exists: " + file.exists());
-        System.out.println("File absolute path: " + file.getAbsolutePath());
 
         // Example 1: Valid Expression
         String expression1 = "4 2 * 3 +";
@@ -105,9 +107,17 @@ public class PostfixCalculator {
             System.out.println("Error: " + e.getMessage());
         }
 
+        // Get file path from user
+        String filePath = getFilePathFromUser();
+
+        // Debug information
+        System.out.println("Current working directory: " + System.getProperty("user.dir"));
+        File file = new File(filePath);
+        System.out.println("File exists: " + file.exists());
+        System.out.println("File absolute path: " + file.getAbsolutePath());
+
         // Example 4: Reading from file
         System.out.println("\nReading expressions from file:");
-        // Use the absolute path to the file
-        calculator.evaluateExpressionsFromFile("C:\\Users\\gondi\\OneDrive\\Documents\\GitHub\\PostFixCalculator\\src\\expressions.txt");
+        calculator.evaluateExpressionsFromFile(filePath);
     }
 }

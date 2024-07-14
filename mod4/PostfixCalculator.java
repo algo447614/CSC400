@@ -84,7 +84,14 @@ public class PostfixCalculator {
     public static String getFilePathFromUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the full path to your expressions.txt file:");
-        String filePath = scanner.nextLine();
+        String filePath = scanner.nextLine().trim();
+        
+        // Remove surrounding quotes if present
+        if ((filePath.startsWith("\"") && filePath.endsWith("\"")) || 
+            (filePath.startsWith("'") && filePath.endsWith("'"))) {
+            filePath = filePath.substring(1, filePath.length() - 1);
+        }
+        
         return filePath;
     }
 

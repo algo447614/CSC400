@@ -1,0 +1,101 @@
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Random;
+
+class CustomDeque {
+    private Deque<Integer> deque;
+
+    public CustomDeque() {
+        this.deque = new LinkedList<>();
+    }
+
+    public void enqueueFront(int data) {
+        deque.addFirst(data);
+    }
+
+    public void enqueueRear(int data) {
+        deque.addLast(data);
+    }
+
+    public int dequeueFront() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return deque.removeFirst();
+    }
+
+    public int dequeueRear() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return deque.removeLast();
+    }
+
+    public Iterator<Integer> iterator() {
+        return new DequeIterator();
+    }
+
+    public boolean isEmpty() {
+        return deque.isEmpty();
+    }
+
+    private class DequeIterator implements Iterator<Integer> {
+        private Iterator<Integer> iterator = deque.iterator();
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public Integer next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return iterator.next();
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        CustomDeque customDeque = new CustomDeque();
+        Random random = new Random();
+
+        // Enqueue 10 random integers
+        System.out.println("Enqueuing 10 random integers:");
+        for (int i = 0; i < 10; i++) {
+            int randomNumber = random.nextInt(100); // Generate random number between 0 and 99
+            if (i % 2 == 0) {
+                customDeque.enqueueFront(randomNumber);
+                System.out.println("Enqueued " + randomNumber + " at front");
+            } else {
+                customDeque.enqueueRear(randomNumber);
+                System.out.println("Enqueued " + randomNumber + " at rear");
+            }
+        }
+
+        // Iterate and display elements
+        System.out.println("\nIterating through the deque:");
+        Iterator<Integer> iterator = customDeque.iterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
+        System.out.println();
+
+        // Demonstrate dequeue operations
+        System.out.println("\nDemonstrating dequeue operations:");
+        System.out.println("Dequeued from front: " + customDeque.dequeueFront());
+        System.out.println("Dequeued from rear: " + customDeque.dequeueRear());
+
+        // Display remaining elements
+        System.out.println("\nRemaining elements in the deque:");
+        iterator = customDeque.iterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
+        System.out.println();
+    }
+}

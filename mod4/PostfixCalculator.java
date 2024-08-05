@@ -5,13 +5,24 @@ import java.io.IOException;
 import java.io.File;
 import java.util.Scanner;
 
+/**
+ * This class implements a calculator for evaluating postfix expressions.
+ */
 public class PostfixCalculator {
+
+    /**
+     * Evaluates a postfix expression and returns the result.
+     * @param postfixExpression The postfix expression to evaluate.
+     * @return The result of the evaluation.
+     * @throws IllegalArgumentException If the expression is invalid.
+     */
     public int evaluatePostfix(String postfixExpression) {
         Stack<Integer> stack = new Stack<>();
         String[] tokens = postfixExpression.split("\\s+");
 
         for (String token : tokens) {
             if (isOperator(token)) {
+                // Check if there are enough operands for the operator
                 if (stack.size() < 2) {
                     throw new IllegalArgumentException("Invalid postfix expression: insufficient operands");
                 }
@@ -20,6 +31,7 @@ public class PostfixCalculator {
                 int result = performOperation(token, operand1, operand2);
                 stack.push(result);
             } else {
+                // If not an operator, try to parse as an integer
                 try {
                     stack.push(Integer.parseInt(token));
                 } catch (NumberFormatException e) {
@@ -28,6 +40,7 @@ public class PostfixCalculator {
             }
         }
 
+        // Check if there's exactly one result left on the stack
         if (stack.size() != 1) {
             throw new IllegalArgumentException("Invalid postfix expression: too many operands");
         }
@@ -35,10 +48,24 @@ public class PostfixCalculator {
         return stack.pop();
     }
 
+    /**
+     * Checks if a token is a valid operator.
+     * @param token The token to check.
+     * @return true if the token is an operator, false otherwise.
+     */
     private boolean isOperator(String token) {
         return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/") || token.equals("%");
     }
 
+    /**
+     * Performs the arithmetic operation specified by the operator.
+     * @param operator The operator to apply.
+     * @param operand1 The first operand.
+     * @param operand2 The second operand.
+     * @return The result of the operation.
+     * @throws ArithmeticException If division or modulo by zero is attempted.
+     * @throws IllegalArgumentException If an unknown operator is provided.
+     */
     private int performOperation(String operator, int operand1, int operand2) {
         switch (operator) {
             case "+":
@@ -62,6 +89,10 @@ public class PostfixCalculator {
         }
     }
 
+    /**
+     * Reads expressions from a file and evaluates each one.
+     * @param filename The name of the file containing the expressions.
+     */
     public void evaluateExpressionsFromFile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -81,6 +112,10 @@ public class PostfixCalculator {
         }
     }
 
+    /**
+     * Prompts the user for the file path and returns it.
+     * @return The file path entered by the user.
+     */
     public static String getFilePathFromUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the full path to your expressions.txt file:");
@@ -95,6 +130,9 @@ public class PostfixCalculator {
         return filePath;
     }
 
+    /**
+     * Main method to demonstrate the functionality of the PostfixCalculator.
+     */
     public static void main(String[] args) {
         PostfixCalculator calculator = new PostfixCalculator();
 
